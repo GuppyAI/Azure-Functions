@@ -1,4 +1,4 @@
-import { app, output } from '@azure/functions';
+import { app } from '@azure/functions';
 import {ingressHandler} from '../helper/ingressHandler.mjs';
 
 app.serviceBusQueue('trigger_sb_q_ingress', {
