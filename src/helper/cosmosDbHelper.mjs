@@ -11,7 +11,7 @@ function hashUserID(userID) {
 }
 
 async function userExists(userID) {
-    hashedUserID = hashUserID(userID);
+    let hashedUserID = hashUserID(userID);
     return (await container.items.query({
         query: "SELECT VALUE COUNT(1) FROM c WHERE c.id = @hashedUserID",
         parameters: [
@@ -21,7 +21,7 @@ async function userExists(userID) {
 }
 
 export async function saveMessage(userID, message, role) {
-    hashedUserID = hashUserID(userID);
+    let hashedUserID = hashUserID(userID);
     let response = null;
     if (! (await userExists(hashedUserID))) {
         response = container.items.create({
