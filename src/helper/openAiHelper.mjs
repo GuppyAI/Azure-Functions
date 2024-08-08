@@ -11,6 +11,6 @@ export async function generateResponse(messages) {
     return await client.chat.completions.create({
         messages: messages,
         model: "",
-        max_tokens: process.env["OPENAI_MAX_TOKENS"],
+        max_tokens: parseInt(process.env["OPENAI_MAX_TOKENS"]),
     })
 }
