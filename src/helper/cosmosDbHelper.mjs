@@ -1,24 +1,32 @@
 import { CosmosClient } from "@azure/cosmos";
 import { appContext } from "./ingressHandler.mjs";
+import { createHash } from "crypto";
 
 const client = new CosmosClient(process.env["COSMOSDB_CONNECTION"]);
 const database = client.database(process.env["COSMOSDB_DATABASE"]);
 const container = database.container(process.env["COSMOSDB_CONTAINER"]);
+const hashUtil = createHash("sha256");
+
+function hashUserID(userID) {
+    return hashUtil.update(userID).digest("hex");
+}
 
 async function userExists(userID) {
+    hashedUserID = hashUserID(userID);
     return (await container.items.query({
-        query: "SELECT VALUE COUNT(1) FROM c WHERE c.id = @userID",
+        query: "SELECT VALUE COUNT(1) FROM c WHERE c.id = @hashedUserID",
         parameters: [
-            { name: "@userID", value: userID }
+            { name: "@hashedUserID", value: hashedUserID }
         ]
     }).fetchAll()).resources[0] > 0;
 }
 
 export async function saveMessage(userID, message, role) {
+    hashedUserID = hashUserID(userID);
     let response = null;
-    if (! (await userExists(userID))) {
+    if (! (await userExists(hashedUserID))) {
         response = container.items.create({
-            id: userID,
+            id: hashedUserID,
             messages: [
                 {
                     role: "system",
@@ -32,7 +40,7 @@ export async function saveMessage(userID, message, role) {
         });
     }
     else {
-        response = container.item(userID, userID).patch({
+        response = container.item(hashedUserID, hashedUserID).patch({
             operations: [
                 {
                     op: "add",
