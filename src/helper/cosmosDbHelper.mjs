@@ -12,7 +12,7 @@ function hashUserID(userID) {
 
 async function userExists(hashedUserID) {
     return (await container.items.query({
-        query: 'SELECT VALUE COUNT(1) FROM c WHERE c.id = "@hashedUserID"',
+        query: 'SELECT VALUE COUNT(1) FROM c WHERE c.id = @hashedUserID',
         parameters: [
             { name: "@hashedUserID", value: hashedUserID }
         ]
