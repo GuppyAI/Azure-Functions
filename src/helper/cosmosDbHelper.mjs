@@ -5,10 +5,9 @@ import { createHash } from "crypto";
 const client = new CosmosClient(process.env["COSMOSDB_CONNECTION"]);
 const database = client.database(process.env["COSMOSDB_DATABASE"]);
 const container = database.container(process.env["COSMOSDB_CONTAINER"]);
-const hashUtil = createHash("sha256");
 
 function hashUserID(userID) {
-    return hashUtil.update(userID).digest("hex");
+    return createHash("sha256").update(userID).digest("hex");
 }
 
 async function userExists(userID) {
