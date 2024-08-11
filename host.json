@@ -15,8 +15,5 @@
   "concurrency": {
     "dynamicConcurrencyEnabled": true,
     "snapshotPersistenceEnabled": true
-  },
-  "extensions": {
-        "serviceBus": {}
-    }
+  }
 }

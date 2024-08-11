@@ -2,16 +2,24 @@
   "name": "azure-functions",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "clean": "rimraf dist",
+    "prestart": "npm run clean && npm run build",
     "start": "func start",
     "test": "echo \"No tests yet...\""
   },
   "dependencies": {
-    "@azure/cosmos": "^4.0.0",
+    "@azure/cosmos": "^4.1.0",
     "@azure/functions": "^4.0.0",
     "@azure/service-bus": "^7.9.5",
-    "openai": "^4.55.0"
+    "openai": "^4.55.4"
   },
-  "main": "src/{index.js,functions/*.js}"
+  "devDependencies": {
+    "@types/node": "^20.x",
+    "rimraf": "^5.0.0",
+    "typescript": "^4.0.0"
+  },
+  "main": "dist/src/{index.js,functions/*.js}"
 }
