@@ -12,7 +12,7 @@ export async function ingressHandler(message: string, context: InvocationContext
 
     if (message === "STOP") {
         cosmosDbHelper.deleteMessages(userID);
-        smsEgressHandler.sendSMS(userID, "<Chat has been reset>\n\nHi I'm Guppy-AI how can I help you today?");
+        smsEgressHandler.sendSMS(userID, process.env["RESET_MESSAGE"]);
         return;
     }
 
