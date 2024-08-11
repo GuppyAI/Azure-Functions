@@ -29,7 +29,7 @@ jobs:
       with:
         path: ./
   
-  deploy:
+  release:
     needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -39,7 +39,7 @@ jobs:
       id: release_name
       run : echo "RELEASE_NAME=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
     - name: create zip
-      run: zip -r app.zip . --exclude @.funcignore --exclude .funcignore
+      run: zip -r app.zip . --exclude .funcignore
     - name: create release
       uses: softprops/action-gh-release@v2
       with:
