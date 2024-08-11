@@ -39,7 +39,7 @@ jobs:
     steps:
     - uses: actions/download-artifact@v4
       with:
-        path: ./
+        merge-multiple: true
     - name: Create Release name
       id: release_name
       run : echo "RELEASE_NAME=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
