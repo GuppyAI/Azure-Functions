@@ -40,6 +40,7 @@ export async function ingressHandler(
 
   cosmosDbHelper.saveMessage(userID, response, "assistant");
   smsEgressHandler.sendSMS(userID, response);
+  smsEgressHandler.close();
 }
 
 type UserProperties = {

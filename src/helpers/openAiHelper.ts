@@ -2,7 +2,7 @@ import { AzureOpenAI } from "openai";
 import { ChatCompletionMessageParam } from "openai/resources";
 
 export class OpenAiHelper {
-  private client: AzureOpenAI;
+  private readonly client: AzureOpenAI;
   private maxTokens: number;
 
   constructor(
@@ -10,7 +10,7 @@ export class OpenAiHelper {
     private readonly apiKey: string,
     private readonly apiVersion: string,
     private readonly deployment: string,
-    private readonly system_prompt: string,
+    private readonly systemPrompt: string,
     maxTokens: number,
   ) {
     this.client = new AzureOpenAI({ endpoint, apiKey, apiVersion, deployment });
@@ -21,7 +21,7 @@ export class OpenAiHelper {
     messages: Array<ChatCompletionMessageParam>,
   ): Promise<string> {
     const response = await this.client.chat.completions.create({
-      messages: [{ role: "system", content: this.system_prompt }, ...messages],
+      messages: [{ role: "system", content: this.systemPrompt }, ...messages],
       model: "",
       max_tokens: this.maxTokens,
     });

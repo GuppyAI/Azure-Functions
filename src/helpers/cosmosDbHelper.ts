@@ -6,7 +6,7 @@ import {
 } from "openai/resources/chat/completions";
 
 export class CosmosDbHelper {
-  private client: CosmosClient;
+  private readonly client: CosmosClient;
   private database: Database;
   private container: Container;
 
@@ -20,8 +20,8 @@ export class CosmosDbHelper {
     this.container = this.database.container(containerName);
   }
 
-  async userExists(userID: string): Promise<boolean> {
-    const hashedUserID = hashUserID.hashUserID(userID);
+  private async userExists(userID: string): Promise<boolean> {
+    const hashedUserID = HashUserID.hashUserID(userID);
     const querySpec = {
       query: "SELECT VALUE COUNT(1) FROM c WHERE c.id = @hashedUserID",
       parameters: [{ name: "@hashedUserID", value: hashedUserID }],
@@ -37,7 +37,7 @@ export class CosmosDbHelper {
     content: string,
     role: ChatCompletionRole,
   ): Promise<Array<ChatCompletionMessageParam>> {
-    const hashedUserID = hashUserID.hashUserID(userID);
+    const hashedUserID = HashUserID.hashUserID(userID);
     if (!(await this.userExists(userID))) {
       const response = await this.container.items.create({
         id: hashedUserID,
@@ -63,7 +63,7 @@ export class CosmosDbHelper {
   }
 
   public async deleteMessages(userID: string): Promise<void> {
-    const hashedUserID = hashUserID.hashUserID(userID);
+    const hashedUserID = HashUserID.hashUserID(userID);
     if (await this.userExists(userID)) {
       await this.container
         .item(hashedUserID, hashedUserID)
@@ -72,15 +72,15 @@ export class CosmosDbHelper {
   }
 }
 
-class hashUserID {
+class HashUserID {
   private static hashedUserID: string;
 
   public static hashUserID(userID: string): string {
-    if (!hashUserID.hashedUserID) {
-      hashUserID.hashedUserID = createHash("sha256")
+    if (!HashUserID.hashedUserID) {
+      HashUserID.hashedUserID = createHash("sha256")
         .update(userID)
         .digest("hex");
     }
-    return hashUserID.hashedUserID;
+    return HashUserID.hashedUserID;
   }
 }
