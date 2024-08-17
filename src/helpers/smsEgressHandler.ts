@@ -22,9 +22,4 @@ export class SmsEgressHandler {
       contentType: "text/plain",
     });
   }
-
-  close(): void {
-    this.sender.close();
-    this.client.close();
-  }
 }
