@@ -1,12 +1,12 @@
 import { Container, CosmosClient, Database } from "@azure/cosmos";
-import { createHash } from "crypto";
+import { HashUserID } from "./hashUserId";
 import {
   ChatCompletionMessageParam,
   ChatCompletionRole,
 } from "openai/resources/chat/completions";
 
 export class CosmosDbHelper {
-  private readonly client: CosmosClient;
+  private client: CosmosClient;
   private database: Database;
   private container: Container;
 
@@ -69,18 +69,5 @@ export class CosmosDbHelper {
         .item(hashedUserID, hashedUserID)
         .replace({ id: hashedUserID, messages: [] });
     }
-  }
-}
-
-class HashUserID {
-  private static hashedUserID: string;
-
-  public static hashUserID(userID: string): string {
-    if (!HashUserID.hashedUserID) {
-      HashUserID.hashedUserID = createHash("sha256")
-        .update(userID)
-        .digest("hex");
-    }
-    return HashUserID.hashedUserID;
   }
 }
