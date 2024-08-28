@@ -85,3 +85,9 @@ The workflows can be configured with the following environment variables:
 - APP_NAME (Azure Function App name)
 and the following secrets:
 - AZURE_CREDENTIALS (Azure Service Principal credentials)
+
+## Copyright
+
+GuppyAI SMS-Gateway (c) 2024 Kay Knöpfle and contributors
+
+SPDX-License-Identifier: GPL-3.0
